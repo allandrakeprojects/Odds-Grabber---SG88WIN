@@ -4,7 +4,9 @@ using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -23,6 +25,11 @@ namespace Odds_Grabber___sg88win
         private string __url = "www.sg88win.com";
         private string __website_name = "sg88win";
         private string __app__website_name = "";
+        private string __api_key = "youdieidie";
+        private string __running_01 = "s";
+        private string __running_02 = "m";
+        private string __running_11 = "S-Sports";
+        private string __running_22 = "M-Sports";
         private int __send = 0;
         private int __r = 79;
         private int __g = 0;
@@ -212,7 +219,7 @@ namespace Odds_Grabber___sg88win
             if (dr == DialogResult.Yes)
             {
                 __is_close = true;
-                Environment.Exit(0);
+                //Environment.Exit(0);
             }
         }
 
@@ -261,18 +268,18 @@ namespace Odds_Grabber___sg88win
                 if (___CheckForInternetConnection())
                 {
                     __is_close = false;
-                    Process.Start(Application.ExecutablePath);
-                    Environment.Exit(0);
+                    //Process.Start(Application.ExecutablePath);
+                    //Environment.Exit(0);
                 }
                 else
                 {
                     __is_close = false;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
         }
         
-        private void SendABCTeam()
+        private void SendABCTeam(string message)
         {
             try
             {
@@ -280,7 +287,7 @@ namespace Odds_Grabber___sg88win
                 string urlString = "https://api.telegram.org/bot{0}/sendMessage?chat_id={1}&text={2}";
                 string apiToken = "651945130:AAGMFj-C4wX0yElG2dBU1SRbfrNZi75jPHg";
                 string chatId = "@odds_bot_abc_team";
-                string text = "Bot:%20-----SG88WIN-----%0ADate%20and%20Time:%20[" + datetime + "]%0AMessage:%20<b>Firing%20up!</>&parse_mode=html";
+                string text = "Bot:%20-----SG88WIN-----%0ADate%20and%20Time:%20[" + datetime + "]%0AMessage:%20<b>" + message + "</>&parse_mode=html";
                 urlString = String.Format(urlString, apiToken, chatId, text);
                 WebRequest request = WebRequest.Create(urlString);
                 Stream rs = request.GetResponse().GetResponseStream();
@@ -299,13 +306,13 @@ namespace Odds_Grabber___sg88win
                 if (___CheckForInternetConnection())
                 {
                     __is_close = false;
-                    Process.Start(Application.ExecutablePath);
-                    Environment.Exit(0);
+                    //Process.Start(Application.ExecutablePath);
+                    //Environment.Exit(0);
                 }
                 else
                 {
                     __is_close = false;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
         }
@@ -385,13 +392,13 @@ namespace Odds_Grabber___sg88win
                     SendMyBot(err.ToString());
                     
                     __is_close = false;
-                    Process.Start(Application.ExecutablePath);
-                    Environment.Exit(0);
+                    //Process.Start(Application.ExecutablePath);
+                    //Environment.Exit(0);
                 }
                 else
                 {
                     __is_close = false;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
         }
@@ -429,13 +436,13 @@ namespace Odds_Grabber___sg88win
                     SendMyBot(err.ToString());
 
                     __is_close = false;
-                    Process.Start(Application.ExecutablePath);
-                    Environment.Exit(0);
+                    //Process.Start(Application.ExecutablePath);
+                    //Environment.Exit(0);
                 }
                 else
                 {
                     __is_close = false;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
         }
@@ -477,12 +484,12 @@ namespace Odds_Grabber___sg88win
                 }
                 else
                 {
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
             else
             {
-                Environment.Exit(0);
+                //Environment.Exit(0);
             }
         }
 
@@ -544,8 +551,8 @@ namespace Odds_Grabber___sg88win
                             webBrowser.WebBrowserShortcutsEnabled = true;
                             webBrowser.Document.GetElementById("remoteloginformsubmit").InvokeMember("Click");
                         }
-
-                        if (webBrowser.Url.ToString().Equals("http://mem.sghuatchai.com/Member/?lang=en"))
+                        
+                        if (webBrowser.Url.ToString().Equals("http://mem.sghuatchai.com/Member/?lang=en") || webBrowser.Url.ToString().Equals("http://mem.sghuatchai.com/Public/Maintenance"))
                         {
                             //label_brand.Visible = true;
                             //pictureBox_loader.Visible = true;
@@ -556,12 +563,20 @@ namespace Odds_Grabber___sg88win
 
                             if (!__is_login)
                             {
+                                if (webBrowser.Url.ToString().Equals("http://mem.sghuatchai.com/Public/Maintenance"))
+                                {
+                                    SendABCTeam("Under Maintenance!");
+                                }
+
+
                                 __is_login = true;
                                 webBrowser.Visible = false;
                                 pictureBox_loader.Visible = true;
                                 webBrowser.WebBrowserShortcutsEnabled = false;
 
-                                SendABCTeam();
+                                SendABCTeam("Firing up!");
+
+
                                 Task task_01 = new Task(delegate { ___SSPORTS_RUNNINGAsync(); });
                                 task_01.Start();
                                 Task task_02 = new Task(delegate { ___MSPORTS_RUNNINGAsync(); });
@@ -574,7 +589,7 @@ namespace Odds_Grabber___sg88win
                             SendMyBot("Website Error.");
 
                             __is_close = false;
-                            Environment.Exit(0);
+                            //Environment.Exit(0);
                         }
                     }
                     catch (Exception err)
@@ -584,13 +599,13 @@ namespace Odds_Grabber___sg88win
                             SendMyBot(err.ToString());
 
                             __is_close = false;
-                            Process.Start(Application.ExecutablePath);
-                            Environment.Exit(0);
+                            //Process.Start(Application.ExecutablePath);
+                            //Environment.Exit(0);
                         }
                         else
                         {
                             __is_close = false;
-                            Environment.Exit(0);
+                            //Environment.Exit(0);
                         }
                     }
                 }
@@ -607,6 +622,7 @@ namespace Odds_Grabber___sg88win
 
             try
             {
+                string source_name = __website_name + __running_01;
                 var cookie = Cookie.GetCookieInternal(webBrowser.Url, false);
                 WebClient wc = new WebClient();
                 wc.Headers.Add("Cookie", cookie);
@@ -619,23 +635,128 @@ namespace Odds_Grabber___sg88win
                 var deserialize_object = JsonConvert.DeserializeObject(responsebody);
                 JObject _jo = JObject.Parse(deserialize_object.ToString());
                 JToken _count = _jo.SelectToken("$.RunningMatches");
-                
+
+                if (_count.Count() > 0)
+                {
+                    for (int i = 0; i < _count.Count(); i++)
+                    {
+                        JToken LeagueName = _jo.SelectToken("$.RunningMatches[" + i + "].LeagueName").ToString();
+                        JToken AwayScore = _jo.SelectToken("$.RunningMatches[" + i + "].AwayScore").ToString();
+                        JToken AwayTeamName = _jo.SelectToken("$.RunningMatches[" + i + "].AwayTeamName").ToString();
+                        JToken HomeScore = _jo.SelectToken("$.RunningMatches[" + i + "].HomeScore").ToString();
+                        JToken HomeTeamName = _jo.SelectToken("$.RunningMatches[" + i + "].HomeTeamName").ToString();
+                        JToken StatementDate = _jo.SelectToken("$.RunningMatches[" + i + "].StatementDate").ToString();
+                        JToken MatchID = _jo.SelectToken("$.RunningMatches[" + i + "].MatchID").ToString();
+                        DateTime StatementDate_Replace = DateTime.ParseExact(StatementDate.ToString(), "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture).AddHours(20);
+                        StatementDate = StatementDate_Replace.ToString("yyyy-MM-dd HH:mm:ss");
+
+                        JToken FTHDP = _jo.SelectToken("$.RunningMatches[" + i + "].FTHDP").ToString();
+                        JToken FTH = _jo.SelectToken("$.RunningMatches[" + i + "].FTH").ToString();
+                        JToken FTA = _jo.SelectToken("$.RunningMatches[" + i + "].FTA").ToString();
+                        JToken BetIDFTOU = _jo.SelectToken("$.RunningMatches[" + i + "].BetIDFTOU").ToString();
+                        JToken FTOU = _jo.SelectToken("$.RunningMatches[" + i + "].FTOU").ToString();
+                        JToken FTO = _jo.SelectToken("$.RunningMatches[" + i + "].FTO").ToString();
+                        JToken FTU = _jo.SelectToken("$.RunningMatches[" + i + "].FTU").ToString();
+                        JToken BetIDFTOE = _jo.SelectToken("$.RunningMatches[" + i + "].BetIDFTOE").ToString();
+                        JToken FTOdd = _jo.SelectToken("$.RunningMatches[" + i + "].FTOdd").ToString();
+                        JToken FTEven = _jo.SelectToken("$.RunningMatches[" + i + "].FTEven").ToString();
+                        JToken BetIDFT1X2 = _jo.SelectToken("$.RunningMatches[" + i + "].BetIDFT1X2").ToString();
+                        JToken FT1 = _jo.SelectToken("$.RunningMatches[" + i + "].FT1").ToString();
+                        JToken FTX = _jo.SelectToken("$.RunningMatches[" + i + "].FTX").ToString();
+                        JToken FT2 = _jo.SelectToken("$.RunningMatches[" + i + "].FT2").ToString();
+                        JToken SpecialGame = _jo.SelectToken("$.RunningMatches[" + i + "].SpecialGame").ToString();
+                        JToken FHHDP = _jo.SelectToken("$.RunningMatches[" + i + "].FHHDP").ToString();
+                        JToken FHH = _jo.SelectToken("$.RunningMatches[" + i + "].FHH").ToString();
+                        JToken FHA = _jo.SelectToken("$.RunningMatches[" + i + "].FHA").ToString();
+                        JToken FHOU = _jo.SelectToken("$.RunningMatches[" + i + "].FHOU").ToString();
+                        JToken FHO = _jo.SelectToken("$.RunningMatches[" + i + "].FHO").ToString();
+                        JToken FHU = _jo.SelectToken("$.RunningMatches[" + i + "].FHU").ToString();
+                        JToken FHOdd = _jo.SelectToken("$.RunningMatches[" + i + "].FHOdd").ToString();
+                        JToken FHEven = _jo.SelectToken("$.RunningMatches[" + i + "].FHEven").ToString();
+                        JToken FH1 = _jo.SelectToken("$.RunningMatches[" + i + "].FH1").ToString();
+                        JToken FHX = _jo.SelectToken("$.RunningMatches[" + i + "].FHX").ToString();
+                        JToken FH2 = _jo.SelectToken("$.RunningMatches[" + i + "].FH2").ToString();
+
+                        string password = __website_name + __running_01 + __api_key;
+                        byte[] encodedPassword = new UTF8Encoding().GetBytes(password);
+                        byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+                        string token = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
+
+                        var reqparm_ = new NameValueCollection
+                        {
+                            {"source_id", "1"},
+                            {"sport_name", "Soccer"},
+                            {"league_name", LeagueName.ToString()},
+                            {"home_team", HomeTeamName.ToString()},
+                            {"away_team", AwayTeamName.ToString()},
+                            {"ref_match_id", MatchID.ToString()},
+                            {"token_api", token},
+                        };
+
+                        byte[] result_ = wc.UploadValues("http://oddsgrabber.ssitex.com/API/sendOdds", "POST", reqparm_);
+                        string responsebody_ = Encoding.UTF8.GetString(result_);
+                    }
+                }
+                else
+                {
+                    Properties.Settings.Default.______odds_iswaiting_01 = true;
+                    Properties.Settings.Default.Save();
+                }
+
                 ___SSPORTS_NOTRUNNINGAsync();
             }
             catch (Exception err)
             {
                 if (___CheckForInternetConnection())
                 {
+                    Properties.Settings.Default.______odds_iswaiting_01 = true;
+                    Properties.Settings.Default.Save();
+                    
+                    if (err.ToString().Contains("(50"))
+                    {
+                        string datetime = DateTime.Now.AddHours(1).ToString("HH");
+                        
+                        if (Properties.Settings.Default.______odds_nextalert_01 == "")
+                        {
+                            Properties.Settings.Default.______odds_nextalert_01 = datetime;
+                            Properties.Settings.Default.Save();
+                            SendABCTeam(__running_11 + " Under Maintenance.");
+                        }
+                        else
+                        {
+                            DateTime _date_from;
+                            DateTime _date_to;
+                            Properties.Settings.Default.______odds_nextalert_01 = datetime + ":00:00";
+                            Properties.Settings.Default.Save();
+                            string _date_from_ = Properties.Settings.Default.______odds_nextalert_01;
+                            string _date_to_ = DateTime.Now.ToString("HH:00:00");
+
+                            if (DateTime.TryParse(_date_from_, out _date_from) && DateTime.TryParse(_date_to_, out _date_to))
+                            {
+                                TimeSpan _ts = _date_to - _date_from;
+                                int _hour = _ts.Hours;
+                                if (Convert.ToInt32(_hour.ToString("0")) == 0 || Convert.ToInt32(_hour.ToString("0")) > 0)
+                                {
+                                    Properties.Settings.Default.______odds_nextalert_01 = datetime;
+                                    Properties.Settings.Default.Save();
+                                    SendABCTeam(__running_11 + " Under Maintenance.");
+                                }
+                            }
+                        }
+
+                        ___SSPORTS_RUNNINGAsync();
+                    }
+
                     SendMyBot(err.ToString());
 
                     __is_close = false;
-                    Process.Start(Application.ExecutablePath);
-                    Environment.Exit(0);
+                    //Process.Start(Application.ExecutablePath);
+                    //Environment.Exit(0);
                 }
                 else
                 {
                     __is_close = false;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
         }
@@ -644,6 +765,7 @@ namespace Odds_Grabber___sg88win
         {
             try
             {
+                string source_name = __website_name + __running_01;
                 var cookie = Cookie.GetCookieInternal(webBrowser.Url, false);
                 WebClient wc = new WebClient();
                 wc.Headers.Add("Cookie", cookie);
@@ -656,8 +778,88 @@ namespace Odds_Grabber___sg88win
                 var deserialize_object = JsonConvert.DeserializeObject(responsebody);
                 JObject _jo = JObject.Parse(deserialize_object.ToString());
                 JToken _count = _jo.SelectToken("$.Matches");
-                                
+
+                if (_count.Count() > 0)
+                {
+                    for (int i = 0; i < _count.Count(); i++)
+                    {
+                        JToken LeagueName = _jo.SelectToken("$.Matches[" + i + "].LeagueName").ToString();
+                        JToken AwayScore = _jo.SelectToken("$.Matches[" + i + "].AwayScore").ToString();
+                        JToken AwayTeamName = _jo.SelectToken("$.Matches[" + i + "].AwayTeamName").ToString();
+                        JToken HomeScore = _jo.SelectToken("$.Matches[" + i + "].HomeScore").ToString();
+                        JToken HomeTeamName = _jo.SelectToken("$.Matches[" + i + "].HomeTeamName").ToString();
+                        JToken StatementDate = _jo.SelectToken("$.Matches[" + i + "].StatementDate").ToString();
+                        JToken MatchID = _jo.SelectToken("$.RunningMatches[" + i + "].MatchID").ToString();
+                        DateTime StatementDate_Replace = DateTime.ParseExact(StatementDate.ToString(), "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture).AddHours(20);
+                        StatementDate = StatementDate_Replace.ToString("yyyy-MM-dd HH:mm:ss");
+
+                        JToken FTHDP = _jo.SelectToken("$.Matches[" + i + "].FTHDP").ToString();
+                        JToken FTH = _jo.SelectToken("$.Matches[" + i + "].FTH").ToString();
+                        JToken FTA = _jo.SelectToken("$.Matches[" + i + "].FTA").ToString();
+                        JToken BetIDFTOU = _jo.SelectToken("$.Matches[" + i + "].BetIDFTOU").ToString();
+                        JToken FTOU = _jo.SelectToken("$.Matches[" + i + "].FTOU").ToString();
+                        JToken FTO = _jo.SelectToken("$.Matches[" + i + "].FTO").ToString();
+                        JToken FTU = _jo.SelectToken("$.Matches[" + i + "].FTU").ToString();
+                        JToken BetIDFTOE = _jo.SelectToken("$.Matches[" + i + "].BetIDFTOE").ToString();
+                        JToken FTOdd = _jo.SelectToken("$.Matches[" + i + "].FTOdd").ToString();
+                        JToken FTEven = _jo.SelectToken("$.Matches[" + i + "].FTEven").ToString();
+                        JToken BetIDFT1X2 = _jo.SelectToken("$.Matches[" + i + "].BetIDFT1X2").ToString();
+                        JToken FT1 = _jo.SelectToken("$.Matches[" + i + "].FT1").ToString();
+                        JToken FTX = _jo.SelectToken("$.Matches[" + i + "].FTX").ToString();
+                        JToken FT2 = _jo.SelectToken("$.Matches[" + i + "].FT2").ToString();
+                        JToken SpecialGame = _jo.SelectToken("$.Matches[" + i + "].SpecialGame").ToString();
+                        JToken FHHDP = _jo.SelectToken("$.Matches[" + i + "].FHHDP").ToString();
+                        JToken FHH = _jo.SelectToken("$.Matches[" + i + "].FHH").ToString();
+                        JToken FHA = _jo.SelectToken("$.Matches[" + i + "].FHA").ToString();
+                        JToken FHOU = _jo.SelectToken("$.Matches[" + i + "].FHOU").ToString();
+                        JToken FHO = _jo.SelectToken("$.Matches[" + i + "].FHO").ToString();
+                        JToken FHU = _jo.SelectToken("$.Matches[" + i + "].FHU").ToString();
+                        JToken FHOdd = _jo.SelectToken("$.Matches[" + i + "].FHOdd").ToString();
+                        JToken FHEven = _jo.SelectToken("$.Matches[" + i + "].FHEven").ToString();
+                        JToken FH1 = _jo.SelectToken("$.Matches[" + i + "].FH1").ToString();
+                        JToken FHX = _jo.SelectToken("$.Matches[" + i + "].FHX").ToString();
+                        JToken FH2 = _jo.SelectToken("$.Matches[" + i + "].FH2").ToString();
+
+                        string password = __website_name + __running_01 + __api_key;
+                        byte[] encodedPassword = new UTF8Encoding().GetBytes(password);
+                        byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+                        string token = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
+
+                        var reqparm_ = new NameValueCollection
+                        {
+                            {"source_id", "1"},
+                            {"sport_name", "Soccer"},
+                            {"league_name", LeagueName.ToString()},
+                            {"home_team", HomeTeamName.ToString()},
+                            {"away_team", AwayTeamName.ToString()},
+                            {"ref_match_id", MatchID.ToString()},
+                            {"token_api", token},
+                        };
+
+                        byte[] result_ = wc.UploadValues("http://oddsgrabber.ssitex.com/API/sendOdds", "POST", reqparm_);
+                        string responsebody_ = Encoding.UTF8.GetString(result_);
+                    }
+                }
+                else
+                {
+                    Properties.Settings.Default.______odds_iswaiting_01 = true;
+                    Properties.Settings.Default.Save();
+                }
+
                 // send ssports 
+                if (Properties.Settings.Default.______odds_nextalert_01 != "")
+                {
+                    if (!Properties.Settings.Default.______odds_iswaiting_01)
+                    {
+                        Properties.Settings.Default.______odds_nextalert_01 = "";
+                        Properties.Settings.Default.Save();
+                        SendABCTeam(__running_11 + " Back to Normal.");
+                    }
+                }
+
+                Properties.Settings.Default.______odds_iswaiting_01 = false;
+                Properties.Settings.Default.Save();
+                
                 Invoke(new Action(() =>
                 {
                     panel3.BackColor = Color.FromArgb(16, 90, 101);
@@ -669,25 +871,56 @@ namespace Odds_Grabber___sg88win
             {
                 if (___CheckForInternetConnection())
                 {
+                    Properties.Settings.Default.______odds_iswaiting_01 = true;
+                    Properties.Settings.Default.Save();
+
+                    if (err.ToString().Contains("(50"))
+                    {
+                        string datetime = DateTime.Now.AddHours(1).ToString("HH");
+
+                        if (Properties.Settings.Default.______odds_nextalert_01 == "")
+                        {
+                            Properties.Settings.Default.______odds_nextalert_01 = datetime;
+                            Properties.Settings.Default.Save();
+                            SendABCTeam(__running_11 + " Under Maintenance.");
+                        }
+                        else
+                        {
+                            DateTime _date_from;
+                            DateTime _date_to;
+                            Properties.Settings.Default.______odds_nextalert_01 = datetime + ":00:00";
+                            Properties.Settings.Default.Save();
+                            string _date_from_ = Properties.Settings.Default.______odds_nextalert_01;
+                            string _date_to_ = DateTime.Now.ToString("HH:00:00");
+
+                            if (DateTime.TryParse(_date_from_, out _date_from) && DateTime.TryParse(_date_to_, out _date_to))
+                            {
+                                TimeSpan _ts = _date_to - _date_from;
+                                int _hour = _ts.Hours;
+                                if (Convert.ToInt32(_hour.ToString("0")) == 0 || Convert.ToInt32(_hour.ToString("0")) > 0)
+                                {
+                                    Properties.Settings.Default.______odds_nextalert_01 = datetime;
+                                    Properties.Settings.Default.Save();
+                                    SendABCTeam(__running_11 + " Under Maintenance.");
+                                }
+                            }
+                        }
+
+                        ___SSPORTS_NOTRUNNINGAsync();
+                    }
+                    
                     SendMyBot(err.ToString());
 
                     __is_close = false;
-                    Process.Start(Application.ExecutablePath);
-                    Environment.Exit(0);
+                    //Process.Start(Application.ExecutablePath);
+                    //Environment.Exit(0);
                 }
                 else
                 {
                     __is_close = false;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
-        }
-        async Task ___TaskWait()
-        {
-            Random _random = new Random();
-            int _random_number = _random.Next(1, 4);
-            string _randowm_number_replace = _random_number.ToString() + "000";
-            await Task.Delay(Convert.ToInt32(_randowm_number_replace));
         }
 
         // M-SPORTS -----
@@ -700,6 +933,7 @@ namespace Odds_Grabber___sg88win
 
             try
             {
+                string source_name = __website_name + "m";
                 var cookie = Cookie.GetCookieInternal(webBrowser.Url, false);
                 WebClient wc = new WebClient();
                 wc.Headers.Add("Cookie", cookie);
@@ -731,24 +965,63 @@ namespace Odds_Grabber___sg88win
             {
                 if (___CheckForInternetConnection())
                 {
+                    Properties.Settings.Default.______odds_iswaiting_01 = true;
+                    Properties.Settings.Default.Save();
+
+                    if (err.ToString().Contains("(50"))
+                    {
+                        string datetime = DateTime.Now.AddHours(1).ToString("HH");
+
+                        if (Properties.Settings.Default.______odds_nextalert_02 == "")
+                        {
+                            Properties.Settings.Default.______odds_nextalert_02 = datetime;
+                            Properties.Settings.Default.Save();
+                            SendABCTeam(__running_22 + " Under Maintenance.");
+                        }
+                        else
+                        {
+                            DateTime _date_from;
+                            DateTime _date_to;
+                            Properties.Settings.Default.______odds_nextalert_02 = datetime + ":00:00";
+                            Properties.Settings.Default.Save();
+                            string _date_from_ = Properties.Settings.Default.______odds_nextalert_02;
+                            string _date_to_ = DateTime.Now.ToString("HH:00:00");
+
+                            if (DateTime.TryParse(_date_from_, out _date_from) && DateTime.TryParse(_date_to_, out _date_to))
+                            {
+                                TimeSpan _ts = _date_to - _date_from;
+                                int _hour = _ts.Hours;
+                                if (Convert.ToInt32(_hour.ToString("0")) == 0 || Convert.ToInt32(_hour.ToString("0")) > 0)
+                                {
+                                    Properties.Settings.Default.______odds_nextalert_02 = datetime;
+                                    Properties.Settings.Default.Save();
+                                    SendABCTeam(__running_22 + " Under Maintenance.");
+                                }
+                            }
+                        }
+
+                        ___MSPORTS_RUNNINGAsync();
+                    }
+
                     SendMyBot(err.ToString());
 
                     __is_close = false;
-                    Process.Start(Application.ExecutablePath);
-                    Environment.Exit(0);
+                    //Process.Start(Application.ExecutablePath);
+                    //Environment.Exit(0);
                 }
                 else
                 {
                     __is_close = false;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
         }
         
-        private async Task ___MSPORTS_NOTRUNNINGAsync()
+        private async void ___MSPORTS_NOTRUNNINGAsync()
         {
             try
             {
+                string source_name = __website_name + "m";
                 var cookie = Cookie.GetCookieInternal(webBrowser.Url, false);
                 WebClient wc = new WebClient();
                 wc.Headers.Add("Cookie", cookie);
@@ -775,8 +1048,20 @@ namespace Odds_Grabber___sg88win
                 string responsebody = Encoding.UTF8.GetString(result);
 
                 // send msports
-                Random _random = new Random();
-                int _random_number = _random.Next(5, 10);
+
+                if (Properties.Settings.Default.______odds_nextalert_02 != "")
+                {
+                    if (!Properties.Settings.Default.______odds_iswaiting_02)
+                    {
+                        Properties.Settings.Default.______odds_nextalert_02 = "";
+                        Properties.Settings.Default.Save();
+                        SendABCTeam(__running_22 + " Back to Normal.");
+                    }
+                }
+
+                Properties.Settings.Default.______odds_iswaiting_02 = false;
+                Properties.Settings.Default.Save();
+
                 Invoke(new Action(() =>
                 {
                     panel4.BackColor = Color.FromArgb(16, 90, 101);
@@ -788,31 +1073,94 @@ namespace Odds_Grabber___sg88win
             {
                 if (___CheckForInternetConnection())
                 {
-                    SendMyBot(err.ToString());
+                    Properties.Settings.Default.______odds_iswaiting_01 = true;
+                    Properties.Settings.Default.Save();
 
+                    if (err.ToString().Contains("(50"))
+                    {
+                        string datetime = DateTime.Now.AddHours(1).ToString("HH");
+
+                        if (Properties.Settings.Default.______odds_nextalert_02 == "")
+                        {
+                            Properties.Settings.Default.______odds_nextalert_02 = datetime;
+                            Properties.Settings.Default.Save();
+                            SendABCTeam(__running_22 + " Under Maintenance.");
+                        }
+                        else
+                        {
+                            DateTime _date_from;
+                            DateTime _date_to;
+                            Properties.Settings.Default.______odds_nextalert_02 = datetime + ":00:00";
+                            Properties.Settings.Default.Save();
+                            string _date_from_ = Properties.Settings.Default.______odds_nextalert_02;
+                            string _date_to_ = DateTime.Now.ToString("HH:00:00");
+
+                            if (DateTime.TryParse(_date_from_, out _date_from) && DateTime.TryParse(_date_to_, out _date_to))
+                            {
+                                TimeSpan _ts = _date_to - _date_from;
+                                int _hour = _ts.Hours;
+                                if (Convert.ToInt32(_hour.ToString("0")) == 0 || Convert.ToInt32(_hour.ToString("0")) > 0)
+                                {
+                                    Properties.Settings.Default.______odds_nextalert_02 = datetime;
+                                    Properties.Settings.Default.Save();
+                                    SendABCTeam(__running_22 + " Under Maintenance.");
+                                }
+                            }
+                        }
+
+                        ___MSPORTS_NOTRUNNINGAsync();
+                    }
+
+                    SendMyBot(err.ToString());
+                    
                     __is_close = false;
-                    Process.Start(Application.ExecutablePath);
-                    Environment.Exit(0);
+                    //Process.Start(Application.ExecutablePath);
+                    //Environment.Exit(0);
                 }
                 else
                 {
                     __is_close = false;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        async Task ___TaskWait()
         {
-            // restart ---
-            //__is_close = true;
-            //Process.Start(Application.ExecutablePath);
-            //Environment.Exit(0);
+            Random _random = new Random();
+            int _random_number = _random.Next(1, 4);
+            string _randowm_number_replace = _random_number.ToString() + "000";
+            await Task.Delay(Convert.ToInt32(_randowm_number_replace));
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
+            WebClient wc = new WebClient();
 
+            string password = __website_name + __running_01 + __api_key;
+            byte[] encodedPassword = new UTF8Encoding().GetBytes(password);
+            byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+            string token = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
+
+            var reqparm_ = new NameValueCollection
+            {
+                {"source_id", "1"},
+                {"sport_name", "Soccer"},
+                {"league_name", "Test asd League"},
+                {"home_team", "SSI"},
+                {"away_team", "GLBS"},
+                {"ref_match_id", "2333"},
+                {"token_api", token},
+            };
+
+            byte[] result_ = wc.UploadValues("http://oddsgrabber.ssitex.com/API/sendOdds", "POST", reqparm_);
+            string responsebody_ = Encoding.UTF8.GetString(result_);
+            MessageBox.Show(responsebody_);
+            
+            // restart ---
+            //__is_close = true;
+            ////Process.Start(Application.ExecutablePath);
+            ////Environment.Exit(0);
         }
         
         public static bool ___CheckForInternetConnection()
@@ -854,6 +1202,33 @@ namespace Odds_Grabber___sg88win
         private void timer_close_message_box_Tick(object sender, EventArgs e)
         {
             ___CloseMessageBox();
+        }
+
+        private void pictureBox_header_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        private void panel3_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        private void panel4_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
     }
 }

@@ -89,7 +89,6 @@
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 8;
             this.textBox1.Visible = false;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button1
             // 
@@ -99,7 +98,6 @@
             this.button1.TabIndex = 7;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
@@ -120,6 +118,7 @@
             this.pictureBox_header.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox_header.TabIndex = 1;
             this.pictureBox_header.TabStop = false;
+            this.pictureBox_header.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_header_MouseDown);
             // 
             // panel1
             // 
@@ -288,6 +287,7 @@
             this.panel3.Size = new System.Drawing.Size(31, 6);
             this.panel3.TabIndex = 12;
             this.panel3.Visible = false;
+            this.panel3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel3_MouseDown);
             // 
             // panel4
             // 
@@ -297,6 +297,7 @@
             this.panel4.Size = new System.Drawing.Size(31, 6);
             this.panel4.TabIndex = 13;
             this.panel4.Visible = false;
+            this.panel4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel4_MouseDown);
             // 
             // timer_close_message_box
             // 
